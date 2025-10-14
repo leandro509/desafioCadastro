@@ -12,22 +12,22 @@ import java.util.regex.Pattern;
  * @author leandro
  */
 public class Pet {
+
     private String nomeCompleto;
     private String sobrenome;
     private String nome;
     private TipoAnimal tipo;
     private SexoAnimal sexo;
     private String endereco;
-    private String bairro;
-    private double idade;
-    private double peso;
+    private String idade;
+    private String peso;
     private String raca;
     private static final String SEM_INFORMACAO = "NAO INFORMADO";
-    
-    
+
     public Pet(String nome, String sobrenome) {
         setNome(nome);
         setSobrenome(sobrenome);
+        setNomeCompleto(nome);
     }
 
     public String getNomeCompleto() {
@@ -35,7 +35,7 @@ public class Pet {
     }
 
     public void setNomeCompleto(String nomeCompleto) {
-        this.nomeCompleto = nome.concat(nome) + sobrenome.concat(sobrenome);
+        this.nomeCompleto = nome.concat(" " + this.sobrenome);
     }
 
     public String getSobrenome() {
@@ -43,17 +43,17 @@ public class Pet {
     }
 
     public void setSobrenome(String sobrenome) {
-        Pattern pattern = Pattern.compile("[a-zA-Z]");
+        Pattern pattern = Pattern.compile("[a-zA-Z\\s]+");
         Matcher matcher = pattern.matcher(sobrenome);
-       
-        if(matcher.matches()) {
-        this.sobrenome = sobrenome;
-        }else if(sobrenome == null){
+
+        if (sobrenome == null) {
             throw new IllegalArgumentException("Sobrenome nao pode ser null");
-        }else {
+        } else if (matcher.matches()) {
+            this.sobrenome = sobrenome;
+        } else {
             throw new IllegalArgumentException("O sobrenome so deve conter letras");
         }
-        
+
     }
 
     public String getNome() {
@@ -61,14 +61,14 @@ public class Pet {
     }
 
     public void setNome(String nome) {
-        Pattern pattern = Pattern.compile("[a-zA-Z]");
+        Pattern pattern = Pattern.compile("[a-zA-Z\\s]+");
         Matcher matcher = pattern.matcher(nome);
-       
-        if(matcher.matches()) {
-        this.nome = nome;
-        }else if(nome == null || nome.trim().isEmpty()){
-            this.nome = getSEM_INFORMACAO();
-        }else {
+
+        if (nome == null) {
+            throw new IllegalArgumentException("O nome nao pode ser null");
+        } else if (matcher.matches()) {
+            this.nome = nome;
+        } else {
             throw new IllegalArgumentException("O nome so deve conter letras");
         }
     }
@@ -97,34 +97,50 @@ public class Pet {
         this.endereco = endereco;
     }
 
-    public String getBairro() {
-        return bairro;
-    }
-
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
-
-    public double getIdade() {
+    public String getIdade() {
         return idade;
     }
 
-    public void setIdade(double idade) {
-        if(idade > 20) {
-            throw new IllegalArgumentException("A idade digitada e invalida");
+    public void setIdade(String idade) {
+
+        if (idade == null || idade.isEmpty()) {
+            idade = Pet.getSEM_INFORMACAO();
+            this.idade = idade;
+        } else {
+
+            double idadeConversao = Double.parseDouble(idade);
+
+            if (idadeConversao > 20) {
+                throw new IllegalArgumentException("A idade digitada e invalida");
+            }
+
+            if (idadeConversao < 1.0) {
+
+                idade = idadeConversao + " anos";
+                this.idade = idade;
+            } else {
+                this.idade = idade + " anos";
+            }
         }
-        this.idade = idade;
     }
 
-    public double getPeso() {
+    public String getPeso() {
         return peso;
     }
 
-    public void setPeso(double peso) {
-        if(peso > 60 || peso < 0.5 ) {
-            throw new IllegalArgumentException("O peso digitado e invalido");
+    public void setPeso(String peso) {
+
+        if (peso == null || peso.isEmpty()) {
+            peso = Pet.getSEM_INFORMACAO();
+            this.peso = peso;
+        } else {
+
+            double pesoConversao = Double.parseDouble(peso);
+            if (pesoConversao > 60 || pesoConversao < 0.5) {
+                throw new IllegalArgumentException("O peso digitado e invalido");
+            }
+            this.peso = peso + "kg";
         }
-        this.peso = peso;
     }
 
     public String getRaca() {
@@ -132,13 +148,18 @@ public class Pet {
     }
 
     public void setRaca(String raca) {
-        this.raca = raca;
+        Pattern pattern = Pattern.compile("[a-zA-Z\\s]+");
+        Matcher matcher = pattern.matcher(raca);
+
+        if (matcher.matches()) {
+            this.raca = raca;
+        } else {
+            throw new IllegalArgumentException("O raca so deve conter letras");
+        }
     }
 
     public static String getSEM_INFORMACAO() {
         return SEM_INFORMACAO;
     }
-    
-    
-    
+
 }

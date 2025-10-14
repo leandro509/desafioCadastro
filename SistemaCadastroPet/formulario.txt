@@ -1,0 +1,77 @@
+1 - Qual o nome e sobrenome do pet?
+2 - Qual o tipo do pet (Cachorro/Gato)?
+3 - Qual o sexo do animal?
+4 - Qual endereço e bairro que ele foi encontrado?
+5 - Qual a idade aproximada do pet?
+6 - Qual o peso aproximado do pet?
+7 - Qual a raça do pet?
+1 - Qual o nome e sobrenome do pet?
+2 - Qual o tipo do pet (Cachorro/Gato)?
+3 - Qual o sexo do animal?
+4 - Qual endereço e bairro que ele foi encontrado?
+5 - Qual a idade aproximada do pet?
+6 - Qual o peso aproximado do pet?
+7 - Qual a raça do pet?
+1 - null
+2 - null
+3 - null
+4 - null
+5 - null
+6 - null
+7 - null1 - null
+2 - null
+3 - null
+4 - null
+5 - null
+6 - null
+7 - null1 - null
+2 - null
+3 - M
+4 - null
+5 - null
+6 - null
+7 - null1 - null
+2 - null
+3 - null
+4 - NAO INFORMADO,Gaspar,Ines sabel
+5 - null
+6 - null
+7 - null1 - null
+2 - null
+3 - null
+4 - null
+5 - 2 anos
+6 - null
+7 - null1 - null
+2 - null
+3 - null
+4 - null
+5 - null
+6 - 2.5 kg
+7 - null1 - null
+2 - null
+3 - null
+4 - null
+5 - null
+6 - null
+7 - chiuaua1 - Qual o nome e sobrenome do pet?
+2 - Qual o tipo do pet (Cachorro/Gato)?
+3 - Qual o sexo do animal?
+4 - Qual endereço e bairro que ele foi encontrado?
+5 - Qual a idade aproximada do pet?
+6 - Qual o peso aproximado do pet?
+7 - Qual a raça do pet?
+1 - Qual o nome e sobrenome do pet?
+2 - Qual o tipo do pet (Cachorro/Gato)?
+3 - Qual o sexo do animal?
+4 - Qual endereço e bairro que ele foi encontrado?
+5 - Qual a idade aproximada do pet?
+6 - Qual o peso aproximado do pet?
+7 - Qual a raça do pet?
+1 - Qual o nome e sobrenome do pet?
+2 - Qual o tipo do pet (Cachorro/Gato)?
+3 - Qual o sexo do animal?
+4 - Qual endereço e bairro que ele foi encontrado?
+5 - Qual a idade aproximada do pet?
+6 - Qual o peso aproximado do pet?
+7 - Qual a raça do pet?
