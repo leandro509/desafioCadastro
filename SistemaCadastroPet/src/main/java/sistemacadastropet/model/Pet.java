@@ -27,15 +27,15 @@ public class Pet {
     public Pet(String nome, String sobrenome) {
         setNome(nome);
         setSobrenome(sobrenome);
-        setNomeCompleto(nome);
+        setNomeCompleto();
     }
 
     public String getNomeCompleto() {
         return nomeCompleto;
     }
 
-    public void setNomeCompleto(String nomeCompleto) {
-        this.nomeCompleto = nome.concat(" " + this.sobrenome);
+    private void setNomeCompleto() {
+        this.nomeCompleto = this.nome + " " + this.sobrenome;
     }
 
     public String getSobrenome() {
@@ -61,7 +61,7 @@ public class Pet {
     }
 
     public void setNome(String nome) {
-        Pattern pattern = Pattern.compile("[a-zA-Z\\s]+");
+        Pattern pattern = Pattern.compile("[a-zA-Z]+");
         Matcher matcher = pattern.matcher(nome);
 
         if (nome == null) {
