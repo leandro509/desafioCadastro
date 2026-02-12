@@ -34,8 +34,8 @@ public class Pet {
         return nomeCompleto;
     }
 
-    private void setNomeCompleto() {
-        this.nomeCompleto = this.nome + " " + this.sobrenome;
+    public void setNomeCompleto() {
+        this.nomeCompleto = getNome() + " " + getSobrenome();
     }
 
     public String getSobrenome() {

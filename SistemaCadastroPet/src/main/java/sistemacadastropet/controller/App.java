@@ -27,9 +27,11 @@ import java.util.logging.Logger;
 import sistemacadastropet.model.Pet;
 import sistemacadastropet.model.SexoAnimal;
 import sistemacadastropet.model.TipoAnimal;
+import sistemacadastropet.services.AlterarPet;
 import sistemacadastropet.services.BuscarDados;
 
 import sistemacadastropet.services.CriaFormularioUtil;
+import sistemacadastropet.services.DeletarPet;
 
 /**
  *
@@ -38,18 +40,18 @@ import sistemacadastropet.services.CriaFormularioUtil;
 public class App {
 
     public static void main(String[] args) {
-
         Scanner scan = new Scanner(System.in);
+
         boolean estaRodando = true;
-        boolean estaRodandoMenu2 = false;
+        //boolean estaRodandoMenu2 = false;
         int escolha = 0;
         int escolha2 = 0;
-        int escolhaCriterioBusca = 0;
+        // int escolhaCriterioBusca = 0;
         String nomePet = "";
         String sobrenomePet = "";
 
         CriaFormularioUtil.criarFormularioSeNaoExistir();
-
+        //fazer somente uma instancia do buscaDados
         //String[] perguntasFormulario = perguntasArquivo();
         while (estaRodando) {
 
@@ -65,396 +67,34 @@ public class App {
             switch (escolha) {
 
                 case 1:
-
                     cadastroPet();
-
                     break;
-
-                //break antes do case 5
+                
+                case 2:
+                    AlterarPet alteracao = new AlterarPet();
+                    alteracao.alterarPetSwitch();
+                    break;
+                case 3:
+                    DeletarPet delete = new DeletarPet();
+                    delete.deletaPetSwitch();
+                    break;
+                case 4:
+                    BuscarDados busca1 = new BuscarDados();
+                    System.out.println(busca1.petsCadastrados());
+                    break;
                 case 5:
-                    estaRodandoMenu2 = true;
-                    while (estaRodandoMenu2) {
-                        System.out.println("--------------");
-                        System.out.println("Deseja buscar por quantos criterios(1 ou 2) ou 0 para voltar");
-
-                        try {
-                            escolhaCriterioBusca = Integer.parseInt(scan.nextLine());
-                        } catch (NumberFormatException e) {
-                            System.out.println("Somente numeros sao aceitos");
-                            continue;
-                        }
-
-                        switch (escolhaCriterioBusca) {
-
-                            case 0:
-                                estaRodandoMenu2 = false;
-                                break;
-
-                            case 1:
-
-                                System.out.println("--------------");
-                                System.out.println("Busca por criterios ");
-                                System.out.println("1-Nome ou sobrenome");
-                                System.out.println("2-Tipo");
-                                System.out.println("3-Sexo");
-                                System.out.println("4-Endereco");
-                                System.out.println("5-Idade");
-                                System.out.println("6-Peso");
-                                System.out.println("7-Raça");
-                                System.out.println("8-Sair");
-
-                                try {
-                                    escolha = Integer.parseInt(scan.nextLine());
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Somente numeros sao aceitos");
-                                    continue;
-                                }
-
-                                switch (escolha) {
-                                    case 1:
-                                        String nome = scan.nextLine();
-                                        BuscarDados busca = new BuscarDados();
-                                        busca.setDado1(nome);
-                                        System.out.println(busca.resultadosBuscas(escolha));
-                                        break;
-
-                                    case 2:
-                                        String tipoPett = scan.nextLine();
-                                        BuscarDados busca2 = new BuscarDados();
-                                        busca2.setDado1(tipoPett);
-                                        System.out.println(busca2.resultadosBuscas(escolha));
-                                        break;
-
-                                    case 3:
-                                        String sexo = scan.nextLine();
-                                        BuscarDados busca3 = new BuscarDados();
-                                        busca3.setDado1(sexo);
-                                        System.out.println(busca3.resultadosBuscas(escolha));
-                                        break;
-
-                                    case 4:
-                                        String enderecoPet = scan.nextLine();
-                                        BuscarDados busca4 = new BuscarDados();
-                                        busca4.setDado1(enderecoPet);
-                                        System.out.println(busca4.resultadosBuscas(escolha));
-                                        break;
-
-                                    case 5:
-                                        String idadePet = scan.nextLine();
-                                        BuscarDados busca5 = new BuscarDados();
-                                        busca5.setDado1(idadePet);
-                                        System.out.println(busca5.resultadosBuscas(escolha));
-                                        break;
-
-                                    case 6:
-                                        String pesoPet = scan.nextLine();
-                                        BuscarDados busca6 = new BuscarDados();
-                                        busca6.setDado1(pesoPet);
-                                        System.out.println(busca6.resultadosBuscas(escolha));
-                                        break;
-
-                                    case 7:
-                                        String racaPet = scan.nextLine();
-                                        BuscarDados busca7 = new BuscarDados();
-                                        busca7.setDado1(racaPet);
-                                        System.out.println(busca7.resultadosBuscas(escolha));
-                                        break;
-
-                                    case 8:
-                                        estaRodandoMenu2 = false;
-                                        break;
-
-                                }
-                                break;
-
-                            
-                            case 2:
-
-                                System.out.println("--------------");
-                                System.out.println("Busca por criterios ");
-                                System.out.println("1-Nome ou sobrenome");
-                                System.out.println("2-Tipo");
-                                System.out.println("3-Sexo");
-                                System.out.println("4-Endereco");
-                                System.out.println("5-Idade");
-                                System.out.println("6-Peso");
-                                System.out.println("7-Raça");
-                                System.out.println("8-Sair");
-
-                                try {
-                                    System.out.println("Escolha o primeiro criterio: ");
-                                    escolha = Integer.parseInt(scan.nextLine());
-
-                                    System.out.println("Escolha o segundo criterio: ");
-                                    escolha2 = Integer.parseInt(scan.nextLine());
-
-                                    if (escolha2 < escolha) {
-                                        int numReservado = escolha2;
-                                        escolha2 = escolha;
-                                        escolha = numReservado;
-                                    }
-
-                                    if (escolha == escolha2) {
-                                        System.out.println("Os dois criterios nao podem ser iguais");
-                                        continue;
-                                    }
-
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Somente numeros sao aceitos");
-                                    continue;
-                                }
-
-                                switch (escolha) {
-                                    case 1:
-                                        System.out.println("Digite o criterio " + escolha);
-                                        String nome = scan.nextLine();
-                                        BuscarDados busca = new BuscarDados();
-                                        busca.setDado1(nome);
-
-                                        switch (escolha2) {
-                                            case 2:
-                                            case 3:
-                                            case 4:
-                                            case 5:
-                                            case 6:
-                                            case 7:
-                                                System.out.println("Digite o criterio " + escolha2);
-                                                String dado = scan.nextLine();
-                                                busca.setDado2(dado);
-                                                break;
-                                        }
-
-                                        System.out.println(busca.resultadosBuscas(escolha, escolha2));
-                                        break;
-
-                                    case 2:
-                                        System.out.println("Digite o criterio " + escolha);
-                                        String tipoPett = scan.nextLine();
-                                        BuscarDados busca2 = new BuscarDados();
-                                        busca2.setDado1(tipoPett);
-                                        switch (escolha2) {
-                                            case 2:
-                                            case 3:
-                                            case 4:
-                                            case 5:
-                                            case 6:
-                                            case 7:
-                                                System.out.println("Digite o criterio " + escolha2);
-                                                String dado = scan.nextLine();
-                                                busca2.setDado2(dado);
-                                                break;
-                                        }
-                                        System.out.println(busca2.resultadosBuscas(escolha, escolha2));
-                                        break;
-
-                                    case 3:
-                                        System.out.println("Digite o criterio " + escolha);
-                                        String sexo = scan.nextLine();
-                                        BuscarDados busca3 = new BuscarDados();
-                                        busca3.setDado1(sexo);
-                                        switch (escolha2) {
-                                            case 2:
-                                            case 3:
-                                            case 4:
-                                            case 5:
-                                            case 6:
-                                            case 7:
-                                                System.out.println("Digite o criterio " + escolha2);
-                                                String dado = scan.nextLine();
-                                                busca3.setDado2(dado);
-                                                break;
-                                        }
-                                        System.out.println(busca3.resultadosBuscas(escolha, escolha2));
-                                        break;
-
-                                    case 4:
-                                        System.out.println("Digite o criterio " + escolha);
-                                        String enderecoPet = scan.nextLine();
-                                        BuscarDados busca4 = new BuscarDados();
-                                        busca4.setDado1(enderecoPet);
-                                        switch (escolha2) {
-                                            case 2:
-                                            case 3:
-                                            case 4:
-                                            case 5:
-                                            case 6:
-                                            case 7:
-                                                System.out.println("Digite o criterio " + escolha2);
-                                                String dado = scan.nextLine();
-                                                busca4.setDado2(dado);
-                                                break;
-                                        }
-                                        System.out.println(busca4.resultadosBuscas(escolha, escolha2));
-                                        break;
-
-                                    case 5:
-                                        System.out.println("Digite o criterio " + escolha);
-                                        String idadePet = scan.nextLine();
-                                        BuscarDados busca5 = new BuscarDados();
-                                        busca5.setDado1(idadePet);
-                                        switch (escolha2) {
-                                            case 2:
-                                            case 3:
-                                            case 4:
-                                            case 5:
-                                            case 6:
-                                            case 7:
-                                                System.out.println("Digite o criterio " + escolha2);
-                                                String dado = scan.nextLine();
-                                                busca5.setDado2(dado);
-                                                break;
-                                        }
-                                        System.out.println(busca5.resultadosBuscas(escolha, escolha2));
-                                        break;
-
-                                    case 6:
-                                        System.out.println("Digite o criterio " + escolha);
-                                        String pesoPet = scan.nextLine();
-                                        BuscarDados busca6 = new BuscarDados();
-                                        busca6.setDado1(pesoPet);
-                                        switch (escolha2) {
-                                            case 2:
-                                            case 3:
-                                            case 4:
-                                            case 5:
-                                            case 6:
-                                            case 7:
-                                                System.out.println("Digite o criterio " + escolha2);
-                                                String dado = scan.nextLine();
-                                                busca6.setDado2(dado);
-                                                break;
-                                        }
-                                        System.out.println(busca6.resultadosBuscas(escolha, escolha2));
-                                        break;
-
-                                    case 7:
-                                        System.out.println("Digite o criterio " + escolha);
-                                        String racaPet = scan.nextLine();
-                                        BuscarDados busca7 = new BuscarDados();
-                                        busca7.setDado1(racaPet);
-                                        switch (escolha2) {
-                                            case 2:
-                                            case 3:
-                                            case 4:
-                                            case 5:
-                                            case 6:
-                                            case 7:
-                                                System.out.println("Digite o criterio " + escolha2);
-                                                String dado = scan.nextLine();
-                                                busca7.setDado2(dado);
-                                                break;
-                                        }
-                                        System.out.println(busca7.resultadosBuscas(escolha, escolha2));
-                                        break;
-
-                                    case 8:
-                                        estaRodandoMenu2 = false;
-                                        break;
-
-                                }
-
-                                break;
-
-                        }
-
-                    }
-                    //break case 5 estaRodando
+                    BuscarDados busca2 = new BuscarDados();
+                    busca2.buscaPetsSwitch();
                     break;
-                //case 6
                 case 6:
+                    scan.close();
                     estaRodando = false;
                     break;
-
-                //final do switch escolha aqui 
             }
         }
 
-        //final do while esta rodando aqui 
     }
-    // final da public static void main aqui    
-
-    /*
-  
-
-    //BACKUP case 5 SE DER TUDO ERRADO 
-    /*
-            case 5:
-                    estaRodandoMenu2 = true;
-                    while (estaRodandoMenu2) {
-
-                        System.out.println("--------------");
-                        System.out.println("Busca por criterios ");
-                        System.out.println("1-Nome ou sobrenome");
-                        System.out.println("2-Sexo");
-                        System.out.println("3-Idade");
-                        System.out.println("4-Peso");
-                        System.out.println("5-Raça");
-                        System.out.println("6-Endereço");
-                        System.out.println("7-Sair");
-
-                        try {
-                            escolha = Integer.parseInt(scan.nextLine());
-                        } catch (NumberFormatException e) {
-                            System.out.println("Somente numeros sao aceitos");
-                            continue;
-                        }
-
-                        switch (escolha) {
-                            case 1:
-                                String nome = scan.nextLine();
-                                BuscarDados busca = new BuscarDados();
-                                busca.setDado1(nome);
-                                System.out.println(busca.resultadosBuscas(escolha));
-                                break;
-
-                            case 2:
-                                String sexo = scan.nextLine();
-                                BuscarDados busca2 = new BuscarDados();
-                                busca2.setDado1(sexo);
-                                System.out.println(busca2.resultadosBuscas(1 + escolha));
-                                break;
-
-                            case 3:
-                                String idadePet = scan.nextLine();
-                                BuscarDados busca3 = new BuscarDados();
-                                busca3.setDado1(idadePet);
-                                System.out.println(busca3.resultadosBuscas(2 + escolha));
-                                break;
-
-                            case 4:
-                                String pesoPet = scan.nextLine();
-                                BuscarDados busca4 = new BuscarDados();
-                                busca4.setDado1(pesoPet);
-                                System.out.println(busca4.resultadosBuscas(2 + escolha));
-                                break;
-
-                            case 5:
-                                String racaPet = scan.nextLine();
-                                BuscarDados busca5 = new BuscarDados();
-                                busca5.setDado1(racaPet);
-                                System.out.println(busca5.resultadosBuscas(2 + escolha));
-                                break;
-
-                            case 6:
-                                String enderecoPet = scan.nextLine();
-                                BuscarDados busca6 = new BuscarDados();
-                                busca6.setDado1(enderecoPet);
-                                System.out.println(busca6.resultadosBuscas(escolha - 2));
-                                break;
-
-                            case 7:
-                                estaRodandoMenu2 = false;
-                                break;
-                        }
-                       
-                    }
-                    //break case 5 estaRodando
-                    break;
-                    //case 6
-                case 6:
-                    estaRodando = false;
-                    break;
-     */
+   
     //Metodo para ler o arquuivo 
     public static String[] perguntasArquivo() {
         FileReader arquivo;
@@ -481,6 +121,21 @@ public class App {
             return str;
         }
         return Character.toUpperCase(str.charAt(0)) + str.substring(1);
+    }
+
+    public static String menuBuscas() {
+        String menu = "--------------";
+        menu += "\nBusca por criterios ";
+        menu += "\n1-Nome ou sobrenome ";
+        menu += "\n2-Tipo ";
+        menu += "\n3-Sexo ";
+        menu += "\n4-Endereco ";
+        menu += "\n5-Idade ";
+        menu += "\n6-Peso ";
+        menu += "\n7-Raça ";
+        menu += "\n8-Sair ";
+
+        return menu;
     }
 
     public static String perguntasFuncoes() {
@@ -518,7 +173,6 @@ public class App {
             nomeSeparado = nomePet.split(" ");
 
             for (int contNome = 0; contNome < nomeSeparado.length; contNome++) {
-
                 if (contNome == 0) {
                     nomePet = nomeSeparado[contNome];
                 } else if (contNome == nomeSeparado.length - 1) {
@@ -529,11 +183,15 @@ public class App {
             }
         }
 
+        nomePet = primeiraLetraMaiuscula(nomePet);
+        sobrenomePet = primeiraLetraMaiuscula(sobrenomePet);
+
         Pet pet = new Pet(nomePet, sobrenomePet);
 
         System.out.println(perguntasFormulario[1]);
         String tipoPet = scan.nextLine();
-        tipoPet.toLowerCase();
+        tipoPet = tipoPet.toLowerCase();
+
         if (tipoPet.equals("cachorro") || tipoPet.startsWith("c")) {
             pet.setTipo(TipoAnimal.CACHORRO);
             tipoPet = "Cachorro";
@@ -636,4 +294,5 @@ public class App {
         System.out.println("Pet cadastrado com sucesso!");
     }
 
+    
 }

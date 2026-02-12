@@ -19,109 +19,101 @@ import static sistemacadastropet.controller.App.menuBuscas;
  *
  * @author leandro
  */
-public class BuscarDados {
+public class DeletarPet {
 
-    private String dado1;
-    private String dado2;
+    private String opcoesDeletar;
 
-    public void setDado1(String dado1) {
-        this.dado1 = dado1;
+    public DeletarPet() {
+
     }
 
-    public void setDado2(String dado2) {
-        this.dado2 = dado2;
+    public String getOpcoesDeletar() {
+        return opcoesDeletar;
     }
 
-    public String petsCadastrados() {
-        String diretorioPetsCadastrados = "C:\\Users\\leandro\\Desktop\\SistemaCadastroPet\\SistemaCadastroPet\\petsCadastrados";
-        File file = new File(diretorioPetsCadastrados);
+    public void setOpcoesDeletar(String opcoesDeletar) {
+        if (Character.isDigit(opcoesDeletar.charAt(0))) {
+            this.opcoesDeletar = opcoesDeletar;
+        } else {
+            throw new IllegalArgumentException("Lista de pets inválida");
+        }
+    }
+
+    public void deletarPet() {
+        Scanner scan = new Scanner(System.in);
+        String opcoes = getOpcoesDeletar();
+        String[] opcoesDelete = opcoes.split("\\R");
+        String petSelecionado = "";
         String resultado = "";
-        File[] arquivos = file.listFiles();
         int contador = 0;
 
+        for (String linha : opcoesDelete) {
+            contador++;
+            System.out.println(linha);
+        }
+
+        int numeroPetExcluir;
+
+        do {
+            System.out.println("Digite o número do pet que deseja deletar (1 até " + contador + ")");
+            numeroPetExcluir = Integer.parseInt(scan.nextLine());
+
+            if (numeroPetExcluir < 0 || numeroPetExcluir > contador) {
+                System.out.println("Número inválido! Tente novamente.");
+            }
+
+        } while (numeroPetExcluir < 0 || numeroPetExcluir > contador);
+
+        petSelecionado = opcoesDelete[numeroPetExcluir - 1];
+        petSelecionado = petSelecionado.substring(3);
+        String diretorioPetsCadastrados = "C:\\Users\\leandro\\Desktop\\SistemaCadastroPet\\SistemaCadastroPet\\petsCadastrados";
+        File file = new File(diretorioPetsCadastrados);
+        File[] arquivos = file.listFiles();
+        int contador2 = 0;
+
         if (arquivos != null) {
+
             //Entra dentro do diretorio pets Cadastrado e passa por todos os arquivos.txt
             for (File arquivo : arquivos) {
-                try (FileReader fr = new FileReader(arquivo.getAbsoluteFile()); BufferedReader br = new BufferedReader(fr)) {
-
+                try {
+                    String[] verificadorPet = new String[arquivos.length];
                     Path path = Paths.get(arquivo.getAbsolutePath());
                     List<String> lines = Files.readAllLines(path);
 
                     for (int j = 0; j < lines.size(); j++) {
                         String linhaFormatada = lines.get(j).substring(4);
+
                         if (j == 0) {
-                            resultado += ((contador + 1) + ". " + linhaFormatada);
-                            contador++;
+                            resultado += (linhaFormatada);
                         } else {
                             resultado += " - " + linhaFormatada;
                         }
 
-                        if (j == (lines.size() - 1)) {
-                            resultado += "\n";
-                        }
-
                     }
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            System.out.println("O caminho informado esta vazio!");
-        }
+                    verificadorPet[contador2] = resultado;
 
-        return resultado;
-    }
-
-    //metodo busca com 1 criterio
-    public String resultadosBuscas(int num1) {
-        boolean encontrado = false;
-
-        String diretorioPetsCadastrados = "C:\\Users\\leandro\\Desktop\\SistemaCadastroPet\\SistemaCadastroPet\\petsCadastrados";
-        File file = new File(diretorioPetsCadastrados);
-        String resultado = "";
-        File[] arquivos = file.listFiles();
-        int contador = 0;
-
-        if (arquivos != null) {
-            //Entra dentro do diretorio pets Cadastrado e passa por todos os arquivos.txt
-            for (File arquivo : arquivos) {
-                try (FileReader fr = new FileReader(arquivo.getAbsoluteFile()); BufferedReader br = new BufferedReader(fr)) {
-                    String linha;
-                    //Le as linhas ate chegar na linha da pergunta digitada no switch
-                    for (int i = 0; i < num1; i++) {
-                        linha = br.readLine();
-
-                        if (linha == null) {
-                            break;
-                        }
-
-                        String linhaFormatadaComparacao = linha.substring(4);
-
-                        if (linhaFormatadaComparacao.toLowerCase().contains(dado1.toLowerCase())) {
-
-                            encontrado = true;
-
-                            Path path = Paths.get(arquivo.getAbsolutePath());
-                            List<String> lines = Files.readAllLines(path);
-
-                            for (int j = 0; j < lines.size(); j++) {
-                                String linhaFormatada = lines.get(j).substring(4);
-                                if (j == 0) {
-                                    resultado += ((contador + 1) + ". " + linhaFormatada);
-                                    contador++;
-                                } else {
-                                    resultado += " - " + linhaFormatada;
-                                }
-
-                                if (j == (lines.size() - 1)) {
-                                    resultado += "\n";
-                                }
-
+                    if (petSelecionado.trim().equals(verificadorPet[contador2].trim())) {
+                        try {
+                            System.out.println("Voce deseja deletar o Pet?(S/N)");
+                            String resposta = scan.nextLine();
+                            resposta.toLowerCase();
+                            if (resposta.equals("s") || (resposta.equals("sim"))) {
+                                System.out.println("O arquivo selecionado " + arquivo.getAbsolutePath() + " foi excluido com sucesso");
+                                Files.delete(path);
+                            } else if (resposta.equals("n") || (resposta.equals("nao"))) {
+                                System.out.println("Exclusao cancelada");
                             }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
 
+                        break;
+                    } else {
+                        contador2++;
+                        resultado = "";
                     }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -129,105 +121,16 @@ public class BuscarDados {
         } else {
             System.out.println("O caminho informado esta vazio!");
         }
-
-        if (!encontrado) {
-            resultado = "O dado procurado " + dado1 + " nao foi encontrado!";
-        }
-
-        return resultado;
     }
 
-    //metodo busca com 2 criterios
-    public String resultadosBuscas(int num1, int num2) {
-        boolean encontrado = false;
-
-        String diretorioPetsCadastrados = "C:\\Users\\leandro\\Desktop\\SistemaCadastroPet\\SistemaCadastroPet\\petsCadastrados";
-        File file = new File(diretorioPetsCadastrados);
-        String resultado = "";
-        File[] arquivos = file.listFiles();
-        int contador = 0;
-
-        if (arquivos != null) {
-            //Entra dentro do diretorio pets Cadastrado e passa por todos os arquivos.txt
-            for (File arquivo : arquivos) {
-                try (FileReader fr = new FileReader(arquivo.getAbsoluteFile()); BufferedReader br = new BufferedReader(fr)) {
-                    String linha;
-
-                    if (num2 < num1) {
-                        int numReservado = num2;
-                        num2 = num1;
-                        num1 = numReservado;
-                    }
-
-                    //Le as linhas ate chegar na linha da pergunta digitada no switch
-                    for (int i = 0; i < num1; i++) {
-                        linha = br.readLine();
-
-                        if (linha == null) {
-                            break;
-                        }
-
-                        // String[] resultadosBuscaDado1 = new String[arquivos.length];
-                        String linhaFormatadaComparacao = linha.substring(4);
-
-                        if (linhaFormatadaComparacao.toLowerCase().contains(dado1.toLowerCase())) {
-                            //achou o dado1 entra aqui, apos isso verificar o dado 2
-                            for (int a = num1; a < num2; a++) {
-                                linha = br.readLine();
-
-                                if (linha == null) {
-                                    break;
-                                }
-                               
-                                linhaFormatadaComparacao = linha.substring(4);
-                                
-                                if (linhaFormatadaComparacao.toLowerCase().contains(dado2.toLowerCase())) {
-                                    encontrado = true;
-
-                                    Path path = Paths.get(arquivo.getAbsolutePath());
-                                    List<String> lines = Files.readAllLines(path);
-
-                                    for (int j = 0; j < lines.size(); j++) {
-                                        String linhaFormatada = lines.get(j).substring(4);
-                                        if (j == 0) {
-                                            resultado += ((contador + 1) + ". " + linhaFormatada);
-                                            contador++;
-                                        } else {
-                                            resultado += " - " + linhaFormatada;
-                                        }
-
-                                        if (j == (lines.size() - 1)) {
-                                            resultado += "\n";
-                                        }
-                                    }
-                                }
-                            }
-
-                        }
-
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            System.out.println("O caminho informado esta vazio!");
-        }
-
-        if (!encontrado) {
-            resultado = "Os dados procurados " + dado1 + " e " + dado2 + " nao foram encontrados!";
-        }
-
-        return resultado;
-    }
-    
-        public void buscaPetsSwitch() {
+    public void deletaPetSwitch() {
+        String respostaScanner;
         boolean estaRodandoMenu2 = false;
         int escolhaCriterioBusca = 0;
         int escolha = 0;
         int escolha2 = 0;
         BuscarDados busca = new BuscarDados();
-
+        DeletarPet deletar = new DeletarPet();
         estaRodandoMenu2 = true;
 
         while (estaRodandoMenu2) {
@@ -245,6 +148,7 @@ public class BuscarDados {
             switch (escolhaCriterioBusca) {
 
                 case 0:
+                    scan.close();
                     estaRodandoMenu2 = false;
                     break;
 
@@ -261,52 +165,67 @@ public class BuscarDados {
                     }
 
                     switch (escolha) {
+
                         case 1:
-                            String nome = scan.nextLine();
-                            busca.setDado1(nome);
-                            System.out.println(busca.resultadosBuscas(escolha));
+
+                            respostaScanner = scan.nextLine();
+                            busca.setDado1(respostaScanner);
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 2:
-                            String tipoPett = scan.nextLine();
-                            busca.setDado1(tipoPett);
+
+                            respostaScanner = scan.nextLine();
+                            busca.setDado1(respostaScanner);
                             System.out.println(busca.resultadosBuscas(escolha));
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 3:
-                            String sexo = scan.nextLine();
-                            busca.setDado1(sexo);
-                            System.out.println(busca.resultadosBuscas(escolha));
+                            respostaScanner = scan.nextLine();
+                            busca.setDado1(respostaScanner);
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 4:
-                            String enderecoPet = scan.nextLine();
-                            busca.setDado1(enderecoPet);
-                            System.out.println(busca.resultadosBuscas(escolha));
+
+                            respostaScanner = scan.nextLine();
+                            busca.setDado1(respostaScanner);
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 5:
-                            String idadePet = scan.nextLine();
-                            busca.setDado1(idadePet);
-                            System.out.println(busca.resultadosBuscas(escolha));
+
+                            respostaScanner = scan.nextLine();
+                            busca.setDado1(respostaScanner);
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 6:
-                            String pesoPet = scan.nextLine();
-                            busca.setDado1(pesoPet);
-                            System.out.println(busca.resultadosBuscas(escolha));
+
+                            respostaScanner = scan.nextLine();
+                            busca.setDado1(respostaScanner);
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 7:
-                            String racaPet = scan.nextLine();
-                            busca.setDado1(racaPet);
-                            System.out.println(busca.resultadosBuscas(escolha));
+
+                            respostaScanner = scan.nextLine();
+                            busca.setDado1(respostaScanner);
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
@@ -365,7 +284,8 @@ public class BuscarDados {
                                     break;
                             }
 
-                            System.out.println(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
@@ -387,7 +307,8 @@ public class BuscarDados {
                                     break;
                             }
 
-                            System.out.println(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
@@ -409,7 +330,8 @@ public class BuscarDados {
                                     break;
                             }
 
-                            System.out.println(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
@@ -430,7 +352,8 @@ public class BuscarDados {
                                     break;
                             }
 
-                            System.out.println(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
@@ -451,7 +374,8 @@ public class BuscarDados {
                                     break;
                             }
 
-                            System.out.println(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
@@ -472,7 +396,8 @@ public class BuscarDados {
                                     break;
                             }
 
-                            System.out.println(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
@@ -493,7 +418,8 @@ public class BuscarDados {
                                     break;
                             }
 
-                            System.out.println(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.setOpcoesDeletar(busca.resultadosBuscas(escolha, escolha2));
+                            deletar.deletarPet();
                             estaRodandoMenu2 = false;
                             break;
 
@@ -510,5 +436,4 @@ public class BuscarDados {
         }
 
     }
-
 }
