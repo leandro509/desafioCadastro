@@ -13,12 +13,12 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-import static sistemacadastropet.controller.App.menuBuscas;
-import static sistemacadastropet.controller.App.primeiraLetraMaiuscula;
+
 import sistemacadastropet.model.Pet;
+import static sistemacadastropet.services.BuscarDados.menuBuscas;
+import static sistemacadastropet.utils.StringUtil.primeiraLetraMaiuscula;
 
 /**
  *
@@ -26,17 +26,17 @@ import sistemacadastropet.model.Pet;
  */
 public class AlterarPet {
 
+    private BuscarDados busca = new BuscarDados();
+    Scanner scan = new Scanner(System.in);
     private String opcoesAlterar;
-
-    public AlterarPet() {
-
-    }
+    private boolean isAlterado = false;
 
     public String getOpcoesAlterar() {
         return opcoesAlterar;
     }
 
     public void setOpcoesAlterar(String opcoesAlterar) {
+        System.out.println(opcoesAlterar);
         if (Character.isDigit(opcoesAlterar.charAt(0))) {
             this.opcoesAlterar = opcoesAlterar;
         } else {
@@ -49,7 +49,6 @@ public class AlterarPet {
         String nomePet = "";
         String sobrenomePet = "";
         String nomeCompleto = "";
-        Scanner scan = new Scanner(System.in);
         String opcoes = getOpcoesAlterar();
         String[] opcoesChange = opcoes.split("\\R");
         String petSelecionado = "";
@@ -77,7 +76,7 @@ public class AlterarPet {
         petSelecionado = petSelecionado.substring(3);
         String diretorioPetsCadastrados = "C:\\Users\\leandro\\Desktop\\SistemaCadastroPet\\SistemaCadastroPet\\petsCadastrados";
         File file = new File(diretorioPetsCadastrados);
-        
+
         File[] arquivos = file.listFiles();
         int contador2 = 0;
 
@@ -140,7 +139,7 @@ public class AlterarPet {
 
                             switch (escolha) {
                                 case 1:
-                                  
+
                                     System.out.println("Deve seguir o formato : " + "nome" + " " + "sobrenome");
                                     nomePet = scan.nextLine();
 
@@ -169,9 +168,8 @@ public class AlterarPet {
                                     pet.setSobrenome(sobrenomePet);
                                     pet.setNomeCompleto();
                                     isNomeModificado = true;
+                                    isAlterado = true;
 
-                                    
-                                   
                                     lines.set(0, "1 - " + pet.getNomeCompleto());
                                     Files.write(path, lines);
 
@@ -191,11 +189,11 @@ public class AlterarPet {
                                     System.out.println("Qual a rua : ");
                                     String rua = scan.nextLine();
                                     rua = primeiraLetraMaiuscula(rua);
-
                                     endereco = endereco.concat(rua + ", " + numeroCasa + ", " + cidade);
                                     pet.setEndereco(endereco);
                                     lines.set(3, "4 - " + pet.getEndereco());
                                     Files.write(path, lines);
+                                    isAlterado = true;
                                     break;
 
                                 case 3:
@@ -204,6 +202,7 @@ public class AlterarPet {
                                     pet.setIdade(idade);
                                     lines.set(4, "5 - " + pet.getIdade());
                                     Files.write(path, lines);
+                                    isAlterado = true;
                                     break;
                                 case 4:
                                     System.out.println("Qual o peso do Pet :");
@@ -211,6 +210,7 @@ public class AlterarPet {
                                     pet.setPeso(peso);
                                     lines.set(5, "6 - " + pet.getPeso());
                                     Files.write(path, lines);
+                                    isAlterado = true;
                                     break;
                                 case 5:
                                     System.out.println("Qual a raca do Pet :");
@@ -222,6 +222,7 @@ public class AlterarPet {
                                     pet.setRaca(raca);
                                     lines.set(6, "7 - " + pet.getRaca());
                                     Files.write(path, lines);
+                                    isAlterado = true;
                                     break;
                                 case 6:
                                     if (isNomeModificado) {
@@ -234,13 +235,16 @@ public class AlterarPet {
                                         String nomeArquivo = dataFormatada + ("-") + (nomeCompletoFormatado.toUpperCase() + ".TXT");
                                         File renomear = new File(diretorioPetsCadastrados + "\\" + nomeArquivo);
                                         arquivo.renameTo(renomear);
+                                        System.out.println("O pet " + pet.getNomeCompleto() + " foi alterado com sucesso");
+                                    } else if (!isAlterado) {
+                                        System.out.println("O pet " + pet.getNomeCompleto() + " nao foi alterado");
                                     }
                                     estaRodando = false;
                                     break;
                             }
-                           
+
                         }
-                        
+
                         break;
                     } else {
                         contador2++;
@@ -271,17 +275,18 @@ public class AlterarPet {
     }
 
     public void alterarPetSwitch() {
-        String respostaScanner;
+        String resultadoBusca;
         boolean estaRodandoMenu2 = false;
         int escolhaCriterioBusca = 0;
         int escolha = 0;
         int escolha2 = 0;
-        BuscarDados busca = new BuscarDados();
-        AlterarPet alteraPet = new AlterarPet();
         estaRodandoMenu2 = true;
 
         while (estaRodandoMenu2) {
-            Scanner scan = new Scanner(System.in);
+
+            String dado1;
+            String dado2;
+
             System.out.println("--------------");
             System.out.println("Deseja buscar por quantos criterios(1 ou 2) ou 0 para voltar");
 
@@ -295,83 +300,95 @@ public class AlterarPet {
             switch (escolhaCriterioBusca) {
 
                 case 0:
-                    scan.close();
                     estaRodandoMenu2 = false;
                     break;
 
                 //chama o metodo busca com 1 criterio
                 case 1:
 
+                    busca.buscaTipo();
+
                     System.out.println(menuBuscas());
 
                     try {
                         escolha = Integer.parseInt(scan.nextLine());
+                        if (escolha < 1 || escolha > 7) {
+                            throw new IllegalArgumentException("O numero digitado é inválido!");
+                        }
                     } catch (NumberFormatException e) {
                         System.out.println("Somente numeros sao aceitos");
+                        continue;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
                         continue;
                     }
 
                     switch (escolha) {
 
                         case 1:
-                            respostaScanner = scan.nextLine();
-                            busca.setDado1(respostaScanner);
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha));
-                            alteraPet.alterarPet();
+                            dado1 = busca.lerCriterio(escolha);
+                            busca.setDado1(dado1);
+                            resultadoBusca = busca.resultadosBuscas(escolha);
+                            this.setOpcoesAlterar(resultadoBusca);
+                            this.alterarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 2:
-                            respostaScanner = scan.nextLine();
-                            busca.setDado1(respostaScanner);
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha));
-                            alteraPet.alterarPet();
+                            dado1 = busca.lerCriterio(escolha);
+                            busca.setDado1(dado1);
+                            resultadoBusca = busca.resultadosBuscas(escolha);
+                            this.setOpcoesAlterar(resultadoBusca);
+                            this.alterarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 3:
-                            respostaScanner = scan.nextLine();
-                            busca.setDado1(respostaScanner);
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha));
-                            alteraPet.alterarPet();
+                            dado1 = busca.lerCriterio(escolha);
+                            busca.setDado1(dado1);
+                            resultadoBusca = busca.resultadosBuscas(escolha);
+                            this.setOpcoesAlterar(resultadoBusca);
+                            this.alterarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 4:
-
-                            respostaScanner = scan.nextLine();
-                            busca.setDado1(respostaScanner);
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha));
-                            alteraPet.alterarPet();
+                            dado1 = busca.lerCriterio(escolha);
+                            busca.setDado1(dado1);
+                            resultadoBusca = busca.resultadosBuscas(escolha);
+                            this.setOpcoesAlterar(resultadoBusca);
+                            this.alterarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 5:
-                            respostaScanner = scan.nextLine();
-                            busca.setDado1(respostaScanner);
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha));
-                            alteraPet.alterarPet();
+                            dado1 = busca.lerCriterio(escolha);
+                            busca.setDado1(dado1);
+                            resultadoBusca = busca.resultadosBuscas(escolha);
+                            this.setOpcoesAlterar(resultadoBusca);
+                            this.alterarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 6:
-                            respostaScanner = scan.nextLine();
-                            busca.setDado1(respostaScanner);
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha));
-                            alteraPet.alterarPet();
+                            dado1 = busca.lerCriterio(escolha);
+                            busca.setDado1(dado1);
+                            resultadoBusca = busca.resultadosBuscas(escolha);
+                            this.setOpcoesAlterar(resultadoBusca);
+                            this.alterarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 7:
-                            respostaScanner = scan.nextLine();
-                            busca.setDado1(respostaScanner);
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha));
-                            alteraPet.alterarPet();
+                            dado1 = busca.lerCriterio(escolha);
+                            busca.setDado1(dado1);
+                            resultadoBusca = busca.resultadosBuscas(escolha);
+                            this.setOpcoesAlterar(resultadoBusca);
+                            this.alterarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 8:
-                            scan.close();
                             estaRodandoMenu2 = false;
                             break;
 
@@ -381,14 +398,34 @@ public class AlterarPet {
                 //chama o metodo busca com 2 criterios
                 case 2:
 
+                    busca.buscaTipo();
+
                     System.out.println(menuBuscas());
 
                     try {
                         System.out.println("Escolha o primeiro criterio: (numero)");
                         escolha = Integer.parseInt(scan.nextLine());
 
+                        if (escolha < 1 || escolha > 7) {
+                            throw new IllegalArgumentException("O numero digitado é inválido!");
+                        }
+
+                        if (escolha == 7) {
+                            estaRodandoMenu2 = false;
+                            break;
+                        }
+
                         System.out.println("Escolha o segundo criterio: (numero)");
                         escolha2 = Integer.parseInt(scan.nextLine());
+
+                        if (escolha2 < 1 || escolha2 > 7) {
+                            throw new IllegalArgumentException("O numero digitado é inválido!");
+                        }
+
+                        if (escolha2 == 7) {
+                            estaRodandoMenu2 = false;
+                            break;
+                        }
 
                         if (escolha2 < escolha) {
                             int numReservado = escolha2;
@@ -404,166 +441,137 @@ public class AlterarPet {
                     } catch (NumberFormatException e) {
                         System.out.println("Somente numeros sao aceitos");
                         continue;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                        continue;
                     }
 
                     switch (escolha) {
                         case 1:
-                            System.out.println("Digite o criterio " + escolha);
-                            String nome = scan.nextLine();
-                            busca.setDado1(nome);
+                            dado1 = busca.lerCriterio(escolha);
+                            busca.setDado1(dado1);
 
                             switch (escolha2) {
                                 case 2:
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
+                                    break;
                                 case 3:
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
+                                    break;
                                 case 4:
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
+                                    break;
                                 case 5:
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
+                                    break;
                                 case 6:
-                                case 7:
-                                    System.out.println("Digite o criterio " + escolha2);
-                                    String dado = scan.nextLine();
-                                    busca.setDado2(dado);
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
                                     break;
                             }
-
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha, escolha2));
-                            alteraPet.alterarPet();
+                            
+                            resultadoBusca = busca.resultadosBuscas(escolha, escolha2);
+                            this.setOpcoesAlterar(resultadoBusca);
+                            this.alterarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 2:
-                            System.out.println("Digite o criterio " + escolha);
-                            String tipoPett = scan.nextLine();
+                            dado1 = busca.lerCriterio(escolha);
+                            busca.setDado1(dado1);
 
-                            busca.setDado1(tipoPett);
                             switch (escolha2) {
-                                case 2:
                                 case 3:
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
+                                    break;
                                 case 4:
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
+                                    break;
                                 case 5:
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
+                                    break;
                                 case 6:
-                                case 7:
-                                    System.out.println("Digite o criterio " + escolha2);
-                                    String dado = scan.nextLine();
-                                    busca.setDado2(dado);
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
                                     break;
                             }
 
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha, escolha2));
-                            alteraPet.alterarPet();
+                            resultadoBusca = busca.resultadosBuscas(escolha, escolha2);
+                            this.setOpcoesAlterar(resultadoBusca);
+                            this.alterarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 3:
-                            System.out.println("Digite o criterio " + escolha);
-                            String sexo = scan.nextLine();
+                            dado1 = busca.lerCriterio(escolha);
+                            busca.setDado1(dado1);
 
-                            busca.setDado1(sexo);
                             switch (escolha2) {
-                                case 2:
-                                case 3:
                                 case 4:
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
+                                    break;
                                 case 5:
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
+                                    break;
                                 case 6:
-                                case 7:
-                                    System.out.println("Digite o criterio " + escolha2);
-                                    String dado = scan.nextLine();
-                                    busca.setDado2(dado);
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
                                     break;
                             }
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha, escolha2));
-                            alteraPet.alterarPet();
+                           
+                            resultadoBusca = busca.resultadosBuscas(escolha, escolha2);
+                            this.setOpcoesAlterar(resultadoBusca);
+                            this.alterarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 4:
-                            System.out.println("Digite o criterio " + escolha);
-                            String enderecoPet = scan.nextLine();
-                            busca.setDado1(enderecoPet);
+                            dado1 = busca.lerCriterio(escolha);
+                            busca.setDado1(dado1);
+
                             switch (escolha2) {
-                                case 2:
-                                case 3:
-                                case 4:
                                 case 5:
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
+                                    break;
                                 case 6:
-                                case 7:
-                                    System.out.println("Digite o criterio " + escolha2);
-                                    String dado = scan.nextLine();
-                                    busca.setDado2(dado);
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
                                     break;
                             }
 
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha, escolha2));
-                            alteraPet.alterarPet();
+                            resultadoBusca = busca.resultadosBuscas(escolha, escolha2);
+                            this.setOpcoesAlterar(resultadoBusca);
+                            this.alterarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 5:
-                            System.out.println("Digite o criterio " + escolha);
-                            String idadePet = scan.nextLine();
-                            busca.setDado1(idadePet);
+                            dado1 = busca.lerCriterio(escolha);
+                            busca.setDado1(dado1);
                             switch (escolha2) {
-                                case 2:
-                                case 3:
-                                case 4:
-                                case 5:
                                 case 6:
-                                case 7:
-                                    System.out.println("Digite o criterio " + escolha2);
-                                    String dado = scan.nextLine();
-                                    busca.setDado2(dado);
+                                    dado2 = busca.lerCriterio(escolha2);
+                                    busca.setDado2(dado2);
                                     break;
                             }
 
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha, escolha2));
-                            alteraPet.alterarPet();
-                            estaRodandoMenu2 = false;
-                            break;
-
-                        case 6:
-                            System.out.println("Digite o criterio " + escolha);
-                            String pesoPet = scan.nextLine();
-                            busca.setDado1(pesoPet);
-                            switch (escolha2) {
-                                case 2:
-                                case 3:
-                                case 4:
-                                case 5:
-                                case 6:
-                                case 7:
-                                    System.out.println("Digite o criterio " + escolha2);
-                                    String dado = scan.nextLine();
-                                    busca.setDado2(dado);
-                                    break;
-                            }
-
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha, escolha2));
-                            alteraPet.alterarPet();
+                            resultadoBusca = busca.resultadosBuscas(escolha, escolha2);
+                            this.setOpcoesAlterar(resultadoBusca);
+                            this.alterarPet();
                             estaRodandoMenu2 = false;
                             break;
 
                         case 7:
-                            System.out.println("Digite o criterio " + escolha);
-                            String racaPet = scan.nextLine();
-                            busca.setDado1(racaPet);
-                            switch (escolha2) {
-                                case 2:
-                                case 3:
-                                case 4:
-                                case 5:
-                                case 6:
-                                case 7:
-                                    System.out.println("Digite o criterio " + escolha2);
-                                    String dado = scan.nextLine();
-                                    busca.setDado2(dado);
-                                    break;
-                            }
-
-                            alteraPet.setOpcoesAlterar(busca.resultadosBuscas(escolha, escolha2));
-                            alteraPet.alterarPet();
-                            estaRodandoMenu2 = false;
-                            break;
-
-                        case 8:
                             estaRodandoMenu2 = false;
                             break;
 
