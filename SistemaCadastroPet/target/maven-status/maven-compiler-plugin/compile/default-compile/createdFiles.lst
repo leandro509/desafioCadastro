@@ -1,8 +1,11 @@
+sistemacadastropet\services\SwitchPrincipal.class
+sistemacadastropet\services\CadastrarPet.class
 sistemacadastropet\model\Pet.class
 sistemacadastropet\model\TipoAnimal.class
-sistemacadastropet\services\CriaFormularioUtil.class
 sistemacadastropet\controller\App.class
 sistemacadastropet\services\DeletarPet.class
+sistemacadastropet\utils\StringUtil.class
 sistemacadastropet\services\BuscarDados.class
 sistemacadastropet\model\SexoAnimal.class
+sistemacadastropet\services\ManipulacaoArquivoTxt.class
 sistemacadastropet\services\AlterarPet.class

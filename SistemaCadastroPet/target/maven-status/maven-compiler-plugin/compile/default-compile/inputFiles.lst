@@ -4,5 +4,8 @@ C:\Users\leandro\Desktop\SistemaCadastroPet\SistemaCadastroPet\src\main\java\sis
 C:\Users\leandro\Desktop\SistemaCadastroPet\SistemaCadastroPet\src\main\java\sistemacadastropet\model\TipoAnimal.java
 C:\Users\leandro\Desktop\SistemaCadastroPet\SistemaCadastroPet\src\main\java\sistemacadastropet\services\AlterarPet.java
 C:\Users\leandro\Desktop\SistemaCadastroPet\SistemaCadastroPet\src\main\java\sistemacadastropet\services\BuscarDados.java
-C:\Users\leandro\Desktop\SistemaCadastroPet\SistemaCadastroPet\src\main\java\sistemacadastropet\services\CriaFormularioUtil.java
+C:\Users\leandro\Desktop\SistemaCadastroPet\SistemaCadastroPet\src\main\java\sistemacadastropet\services\CadastrarPet.java
 C:\Users\leandro\Desktop\SistemaCadastroPet\SistemaCadastroPet\src\main\java\sistemacadastropet\services\DeletarPet.java
+C:\Users\leandro\Desktop\SistemaCadastroPet\SistemaCadastroPet\src\main\java\sistemacadastropet\services\ManipulacaoArquivoTxt.java
+C:\Users\leandro\Desktop\SistemaCadastroPet\SistemaCadastroPet\src\main\java\sistemacadastropet\services\SwitchPrincipal.java
+C:\Users\leandro\Desktop\SistemaCadastroPet\SistemaCadastroPet\src\main\java\sistemacadastropet\utils\StringUtil.java
