@@ -252,7 +252,10 @@ Caso o usuário escolha a opção 2, você deverá exibir um novo menu com as se
 
 - **Crie um arquivo README.md com uma descrição do seu projeto e instruções de como executá-lo.**
 
-**## 🎬 Demonstração do Projeto
+### Gostou do projeto?
+Se você chegou até aqui, parabéns! Você concluiu o primeiro grande desafio do guia. 🚀
+
+## 🎬 Demonstração do Projeto
 
 Neste vídeo é possível visualizar o funcionamento do sistema, incluindo:
 
@@ -263,7 +266,5 @@ Neste vídeo é possível visualizar o funcionamento do sistema, incluindo:
 - Navegação pelo menu CLI
 
 ▶️ Vídeo demonstrativo:  
-[Clique aqui para assistir](https://youtu.be/rxTdT91jf-w)**
+[Clique aqui para assistir](https://youtu.be/rxTdT91jf-w)
 
-### Gostou do projeto?
-Se você chegou até aqui, parabéns! Você concluiu o primeiro grande desafio do guia. 🚀
