@@ -36,7 +36,6 @@ public class AlterarPet {
     }
 
     public void setOpcoesAlterar(String opcoesAlterar) {
-        System.out.println(opcoesAlterar);
         if (Character.isDigit(opcoesAlterar.charAt(0))) {
             this.opcoesAlterar = opcoesAlterar;
         } else {
