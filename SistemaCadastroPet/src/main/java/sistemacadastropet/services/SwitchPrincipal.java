@@ -39,7 +39,11 @@ public class SwitchPrincipal {
 
                 case 1:
                     CadastrarPet cadastro = new CadastrarPet();
+                    try{
                     cadastro.cadastraAndSalva();
+                    }catch(IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 
                 case 2:
